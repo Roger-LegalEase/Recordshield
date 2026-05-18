@@ -10,7 +10,7 @@ import {
 import { getStripe } from "@/lib/billing/stripe";
 import { prisma } from "@/lib/prisma";
 
-const recordCheckAmountCents = 19_900;
+const recordCheckAmountCents = 14_900;
 const documentPrepAmountCents = 5_000;
 
 type CheckoutSession = {
@@ -50,7 +50,7 @@ export async function createRecordCheckCheckoutSession(
   dependencies: CheckoutServiceDependencies = {}
 ): Promise<CheckoutSession> {
   const configEnv = dependencies.configEnv ?? env;
-  assertCheckoutEnv(configEnv, ["STRIPE_PRICE_RECORD_CHECK"]);
+  assertCheckoutEnv(configEnv, ["STRIPE_PRICE_RECORDSHIELD_PRIVATE_REVIEW"]);
   const stripeClient = dependencies.stripeClient ?? getStripe();
 
   return stripeClient.checkout.sessions.create({
@@ -58,7 +58,7 @@ export async function createRecordCheckCheckoutSession(
     customer_email: user.email,
     line_items: [
       {
-        price: configEnv.STRIPE_PRICE_RECORD_CHECK,
+        price: configEnv.STRIPE_PRICE_RECORDSHIELD_PRIVATE_REVIEW,
         quantity: 1
       }
     ],
@@ -83,7 +83,7 @@ export async function createDocumentPrepCheckoutSession(
   dependencies: CheckoutServiceDependencies = {}
 ): Promise<CheckoutSession> {
   const configEnv = dependencies.configEnv ?? env;
-  assertCheckoutEnv(configEnv, ["STRIPE_PRICE_RECORD_CHECK"]);
+  assertCheckoutEnv(configEnv, ["STRIPE_PRICE_RECORDSHIELD_PRIVATE_REVIEW"]);
   const stripeClient = dependencies.stripeClient ?? getStripe();
 
   return stripeClient.checkout.sessions.create({
@@ -91,7 +91,7 @@ export async function createDocumentPrepCheckoutSession(
     customer_email: input.email,
     line_items: [
       {
-        price: configEnv.STRIPE_PRICE_RECORD_CHECK,
+        price: configEnv.STRIPE_PRICE_RECORDSHIELD_PRIVATE_REVIEW,
         quantity: 1
       }
     ],

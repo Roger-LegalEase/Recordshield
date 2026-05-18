@@ -7,12 +7,12 @@ const validEnv = {
   NEXT_PUBLIC_APP_URL: "http://localhost:3000",
   DEV_AUTH_EMAIL: "admin@example.com",
   DEV_AUTH_ROLE: "ADMIN",
-  RECORDSHIELD_BASIC_PRICE_CENTS: "4900",
-  RECORDSHIELD_FAMILY_PRICE_CENTS: "9900",
-  RECORDSHIELD_BUSINESS_PRICE_CENTS: "19900",
+  RECORDSHIELD_BASIC_PRICE_CENTS: "14900",
+  RECORDSHIELD_FAMILY_PRICE_CENTS: "29900",
+  RECORDSHIELD_BUSINESS_PRICE_CENTS: "49900",
   STRIPE_SECRET_KEY: "sk_test_123",
   STRIPE_WEBHOOK_SECRET: "whsec_123",
-  STRIPE_PRICE_RECORD_CHECK: "price_record_check",
+  STRIPE_PRICE_RECORDSHIELD_PRIVATE_REVIEW: "price_recordshield_private_review",
   STRIPE_PRICE_MONITORING_MONTHLY: "price_monitoring_monthly",
   STRIPE_PRICE_MONITORING_ANNUAL: "price_monitoring_annual",
   STRIPE_PRICE_MONITORING_PLUS_MONTHLY: "price_monitoring_plus_monthly",
@@ -29,7 +29,7 @@ describe("parseEnv", () => {
   it("accepts a complete valid environment", () => {
     expect(parseEnv(validEnv)).toMatchObject({
       DEV_AUTH_ROLE: "ADMIN",
-      RECORDSHIELD_BASIC_PRICE_CENTS: 4900,
+      RECORDSHIELD_BASIC_PRICE_CENTS: 14900,
       CHECKR_PACKAGE_SLUG: "recordshield_background_check"
     });
   });
@@ -77,7 +77,7 @@ describe("parseEnv", () => {
 
   it("uses build-safe price cent defaults", () => {
     expect(parseEnv({})).toMatchObject({
-      RECORDSHIELD_BASIC_PRICE_CENTS: 19900,
+      RECORDSHIELD_BASIC_PRICE_CENTS: 14900,
       RECORDSHIELD_FAMILY_PRICE_CENTS: 29900,
       RECORDSHIELD_BUSINESS_PRICE_CENTS: 49900
     });

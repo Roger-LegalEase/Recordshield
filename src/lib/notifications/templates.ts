@@ -35,15 +35,15 @@ const templates: Record<NotificationTemplateType, NotificationTemplate> = {
   },
   report_pending: {
     subject: "Your RecordShield check is in progress",
-    body: "Your personal record check is still processing. Log in to see status updates. Timing can vary by provider availability, jurisdiction, court data, and reporting rules."
+    body: "Your Private Record Review is still processing. Log in to see status updates. Timing can vary by provider availability, jurisdiction, court data, and reporting rules."
   },
   report_ready: {
     subject: "Your RecordShield status has been updated",
-    body: "Your status is ready to review. Log in to view your plain-English summary and expungement-readiness review."
+    body: "Your status is ready to review. Log in to view your clear summary and expungement-readiness review."
   },
   ai_summary_ready: {
     subject: "Your RecordShield summary is ready",
-    body: "Your plain-English summary is ready. Log in to review it. AI-generated summaries may contain errors or omissions, so verify results and consult a qualified attorney for legal advice."
+    body: "Your easy-to-understand summary is ready. Log in to review it. AI-generated summaries may contain errors or omissions, so verify results and consult a qualified attorney for legal advice."
   },
   ai_summary_failed_manual_review: {
     subject: "Your RecordShield summary needs review",

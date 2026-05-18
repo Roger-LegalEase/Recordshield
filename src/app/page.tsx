@@ -24,26 +24,26 @@ const useCases = [
 ];
 
 const features = [
-  ["Secure record check", "Start a personal record check through a trusted provider flow."],
+  ["Private record check", "Start through a secure provider flow."],
   ["Private dashboard", "Track your review, save notes, and keep everything organized in one place."],
   ["Private Record Review", "See what appears and understand what may matter without decoding confusing record language on your own."],
-  ["Next-step summary", "If something appears, RecordShield helps you understand whether a cleanup path may be worth exploring."],
+  ["Clear next-step guidance", "If something appears, RecordShield helps you understand whether a cleanup path may be worth exploring."],
 ];
 
 const steps = [
-  ["01", "Start your private review", "Create your secure dashboard and begin your personal record check.", ""],
+  ["01", "Start your private review", "Create your secure dashboard and begin your Private Record Review.", ""],
   ["02", "Complete the secure check", "Follow the provider flow so your report can be requested safely.", "accent"],
   ["03", "Review what appears", "RecordShield organizes what shows up so you can understand it without guessing.", "accent"],
   ["04", "See your next move", "If something may be cleanable, we'll show you the next step through LegalEase or Expungement.ai.", ""],
 ];
 
 const includes = [
-  "Secure personal record check",
-  "Private RecordShield dashboard",
+  "Private record check",
+  "Secure provider flow",
+  "Private dashboard",
   "Private Record Review",
-  "Issue summary",
-  "Next-step summary",
-  "Expungement.ai path if applicable",
+  "Clear next-step guidance",
+  "No subscription",
 ];
 
 export default function HomePage() {
@@ -54,11 +54,11 @@ export default function HomePage() {
           <div>
             <span className="eyebrow">Private Record Review</span>
             <h1 className="h1" id="hero-heading">
-              Know what may show up before it gets in your way.
+              Know what may show up before it blocks your next move.
             </h1>
             <p className="lead">
-              RecordShield helps you privately check your record, understand what appears, and see your next step before an employer,
-              landlord, licensing board, or agency asks.
+              Check your record privately. Understand what appears. Know your next move. Before an employer, landlord, or agency asks,
+              see what may appear for yourself.
             </p>
             <div className="actions">
               <Link className="btn primary" href="#pricing">
@@ -77,7 +77,7 @@ export default function HomePage() {
             </div>
             <div className="float-card" aria-label="RecordShield dashboard preview">
               <div className="top">
-                <span>RecordShield check</span>
+                <span>Private Record Review</span>
                 <strong>In progress</strong>
               </div>
               <div className="bar" aria-hidden="true">
@@ -129,7 +129,7 @@ export default function HomePage() {
             <span className="eyebrow">What you get</span>
             <h2 className="h2">More than a report. A private review of what it means.</h2>
             <p className="body">
-              RecordShield organizes your record check, review status, findings, documents, notes, and next steps in one secure
+              RecordShield organizes your Private Record Review, review status, findings, documents, notes, and next steps in one secure
               dashboard built for personal planning.
             </p>
             <div className="features">
@@ -152,8 +152,8 @@ export default function HomePage() {
           <span className="eyebrow">How it works</span>
           <h2 className="h2 light">From uncertainty to clarity in four simple steps.</h2>
           <p className="body muted-light">
-            No scare tactics. No mystery subscription. No courthouse confusion. Just a private way to see what may show up and understand
-            what to do next.
+            No subscription. No hidden membership. No scare tactics. Just a private way to see what may show up and understand what to do
+            next.
           </p>
           <div className="steps">
             {steps.map(([num, title, body, variant]) => (
@@ -182,7 +182,7 @@ export default function HomePage() {
               <span className="badge">Private Record Review</span>
               <span className="eyebrow">One-time payment</span>
               <div className="big">$149</div>
-              <p className="small">Launch price: $99 for the first 250 customers. Regular price: $149.</p>
+              <p className="small">Launch price available for early users.</p>
               <p className="small">
                 For personal planning only. Not for employment, tenant, credit, insurance, housing, or eligibility screening.
               </p>
@@ -203,28 +203,13 @@ export default function HomePage() {
             </div>
             <div className="side">
               <div className="monitor">
-                <h3>Deeper Court Review</h3>
+                <h3>RecordShield Private Review</h3>
                 <p>
-                  For reports that show something unclear or incomplete. If your review needs more court-level detail, you may be able to
-                  request a deeper review before deciding what to do next.
+                  Know what may show up before it blocks your next move, with a private dashboard and clear next-step guidance.
                 </p>
                 <div className="option">
-                  <strong>Deeper review</strong>
-                  <div className="small">+$150</div>
-                </div>
-                <Link className="btn primary" href="/support">
-                  Request deeper review
-                </Link>
-              </div>
-              <div className="monitor">
-                <h3>Record Watch</h3>
-                <p>
-                  Record Watch helps you keep your dashboard active, store your review, receive reminders, and stay updated on future
-                  cleanup opportunities.
-                </p>
-                <div className="option">
-                  <strong>Optional add-on</strong>
-                  <div className="small">$49/year</div>
+                  <strong>One-time review</strong>
+                  <div className="small">$149</div>
                 </div>
               </div>
               <div className="notice">
@@ -271,7 +256,7 @@ export default function HomePage() {
         <div className="container">
           <span className="eyebrow">Private dashboard</span>
           <h2 className="h2">Everything about your review, organized in one place.</h2>
-          <p className="body">Track your record check, review status, findings, documents, notes, and Wilma questions from one private dashboard.</p>
+          <p className="body">Track your Private Record Review, review status, findings, documents, notes, and Wilma questions from one private dashboard.</p>
           <img className="dashboard-wide" src="/brand/images/product-device-mockup.png" alt="RecordShield dashboard modules" loading="lazy" />
           <div className="notice notice-spaced">
             <h4>Personal use notice</h4>

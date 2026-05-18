@@ -1,20 +1,10 @@
 import Link from "next/link";
 import { requireUser } from "@/lib/auth";
-import { getBetaFlagStatus } from "@/lib/beta";
 import { prisma } from "@/lib/prisma";
-import { productConfig } from "@/lib/product-config";
 
 export default async function DashboardPage() {
   const user = await requireUser();
-  const [invitationUrl, alerts] = await Promise.all([
-    getLatestInvitationUrl(user.email),
-    prisma.monitoringAlert.findMany({
-      where: { userId: user.id },
-      orderBy: { createdAt: "desc" },
-      take: 10
-    }).catch(() => [])
-	  ]);
-  const flags = getBetaFlagStatus();
+  const invitationUrl = await getLatestInvitationUrl(user.email);
 
   return (
     <div className="panel">
@@ -39,38 +29,11 @@ export default async function DashboardPage() {
           </p>
         </section>
       ) : null}
-      <h2>Monitoring alert history</h2>
-      {alerts.length > 0 ? (
-        <ul>
-          {alerts.map((alert) => (
-            <li key={alert.id}>
-              <strong>{alert.title}</strong> <span className="muted">{alert.createdAt.toLocaleDateString()}</span>
-              <br />
-              {alert.message}
-            </li>
-          ))}
-        </ul>
-      ) : (
-        <p className="muted">No monitoring alerts yet.</p>
-      )}
-      {flags.monitoringPurchaseEnabled ? (
-        <>
-          <h2>Available plans</h2>
-          <p className="muted">
-            Monitoring alerts do not guarantee detection of every record or change. Check your dashboard for details
-            rather than relying on email content.
-          </p>
-          <ul>
-            {Object.values(productConfig).map((product) => (
-              <li key={product.key}>
-                {product.name}: {product.formattedPrice}
-              </li>
-            ))}
-          </ul>
-        </>
-      ) : (
-        <p className="muted">Monitoring purchases are paused for this beta cohort.</p>
-      )}
+      <h2>Private Record Review</h2>
+      <p className="muted">
+        Your dashboard will organize your review status, findings, documents, notes, and clear next-step guidance as
+        they become available.
+      </p>
       <p>
         <Link href="/privacy">Privacy</Link> · <Link href="/terms">Terms</Link> ·{" "}
         <Link href="/support">Support</Link> · <Link href="/data-deletion">Data deletion</Link>

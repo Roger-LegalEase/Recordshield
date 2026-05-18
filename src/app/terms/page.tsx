@@ -6,8 +6,8 @@ export default function TermsPage() {
       <p className="muted">This beta placeholder describes the intended service scope and is not final legal copy.</p>
       <h2>Service scope</h2>
       <p>
-        LegalEase RecordShield supports personal self-review, plain-English summaries, expungement-readiness review,
-        and optional monitoring alerts for the account holder.
+        LegalEase RecordShield supports personal self-review, clear summaries, and expungement-readiness review for
+        the account holder.
       </p>
       <h2>User responsibilities</h2>
       <p>
@@ -19,10 +19,10 @@ export default function TermsPage() {
         RecordShield must not be used for employment, tenant, credit, insurance, ranking, scoring, or other eligibility
         decisions about any person.
       </p>
-      <h2>Beta status</h2>
+      <h2>Important limits</h2>
       <p>
-        The product is in beta and may change. Results can depend on provider availability, jurisdiction, court data,
-        and reporting rules. Expungement-readiness output is not a guarantee of record removal.
+        Results can depend on provider availability, jurisdiction, court data, and reporting rules.
+        Expungement-readiness output is not a guarantee of record removal.
       </p>
     </main>
   );

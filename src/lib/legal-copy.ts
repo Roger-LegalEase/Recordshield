@@ -1,9 +1,8 @@
 export const preferredCustomerTerms = [
-  "Personal record check",
+  "Private Record Review",
   "Consumer self-check",
   "Expungement-readiness review",
-  "Plain-English summary",
-  "Monitoring alerts",
+  "Clear summary",
   "May be eligible",
   "May require review",
   "Information was not available",

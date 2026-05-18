@@ -19,7 +19,7 @@ Wilma determines whether a user appears to fit LegalEase's self-help document-pr
 - `OPENAI_MODEL` is reviewed.
 - `STRIPE_SECRET_KEY` is set server-side only.
 - `STRIPE_WEBHOOK_SECRET` is configured.
-- `STRIPE_PRICE_RECORD_CHECK` and any existing checkout price configuration are reviewed.
+- `STRIPE_PRICE_RECORDSHIELD_PRIVATE_REVIEW` and any existing checkout price configuration are reviewed.
 - Wilma document-prep checkout metadata uses `product: "wilma_document_prep"` and `priceCents: 5000`.
 - `BOT_PROTECTION_SECRET` is configured or the launch owner has explicitly accepted the fallback.
 - `RATE_LIMIT_REDIS_REST_URL` and `RATE_LIMIT_REDIS_REST_TOKEN` are configured for production rate limiting.

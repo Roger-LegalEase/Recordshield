@@ -907,6 +907,27 @@
   margin-top: 8px;
 }
 
+.pricing-trust-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 10px 0 22px;
+}
+
+.pricing-trust-row span {
+  display: inline-flex;
+  align-items: center;
+  min-height: 30px;
+  padding: 6px 10px;
+  color: var(--blue);
+  background: #e8f1fb;
+  border: 1px solid rgba(14, 79, 138, .12);
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 800;
+  line-height: 1.2;
+}
+
 .rs-checkout-row {
   display: grid;
   grid-template-columns: minmax(0, 1fr) auto;

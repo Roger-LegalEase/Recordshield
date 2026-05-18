@@ -71,7 +71,10 @@ export function RecordCheckCheckoutForm({ source }: RecordCheckCheckoutFormProps
           {error}
         </p>
       ) : (
-        <p className="small">You will complete payment in Stripe.</p>
+        <p className="small">
+          You will complete payment in Stripe. After payment, you&apos;ll receive access to your private review
+          dashboard and instructions to complete your secure provider check.
+        </p>
       )}
     </form>
   );

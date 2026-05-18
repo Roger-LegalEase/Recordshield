@@ -335,12 +335,12 @@ async function ensureRecordCheckCase(
   }
 
   const shieldCase = await db.shieldCase.create({
-    data: {
-      ownerId: input.userId,
-      productKey: "record_check",
-      displayName: "Record Check + Expungement Readiness",
-      status: "IN_REVIEW"
-    }
+      data: {
+        ownerId: input.userId,
+        productKey: "record_check",
+        displayName: "RecordShield Private Review",
+        status: "IN_REVIEW"
+      }
   });
 
   await db.auditEvent?.create({

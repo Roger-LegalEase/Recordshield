@@ -1,39 +1,66 @@
 import Link from "next/link";
+import { RecordShieldStatusPanel } from "@/app/components/RecordShieldStatusPanel";
 import { requireUser } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
+import {
+  deriveRecordShieldStatus,
+  type ProviderStatus,
+  type ReviewStatus
+} from "@/lib/recordshield/status-orchestration";
 
 export default async function DashboardPage() {
   const user = await requireUser();
-  const invitationUrl = await getLatestInvitationUrl(user.email);
+  const dashboardState = await getDashboardState(user.email);
+  const derivedStatus = deriveRecordShieldStatus({
+    paymentStatus: "payment_succeeded",
+    accountStatus: "dashboard_access_granted",
+    providerStatus: dashboardState.providerStatus,
+    reviewStatus: dashboardState.reviewStatus,
+    qaStatus: dashboardState.qaStatus,
+    refundStatus: "refund_none",
+    deletionStatus: "deletion_none",
+    lastUpdatedAt: dashboardState.lastUpdatedAt
+  });
 
   return (
     <div className="panel">
-      <h1>Personal self-check dashboard</h1>
+      <h1>Private Record Review dashboard</h1>
       <p className="muted">Welcome back, {user.email}.</p>
       <p className="muted">
         LegalEase RecordShield is for personal self-review only. It is not for employment, tenant, credit,
         insurance, or eligibility decisions, and it is not a final legal determination.
       </p>
-      {invitationUrl ? (
+      <RecordShieldStatusPanel status={derivedStatus} />
+      {dashboardState.invitationUrl ? (
         <section>
-          <h2>Provider invitation</h2>
+          <h2>Secure check</h2>
           <p className="muted">
-            You requested a personal background check on yourself. Checkr may collect sensitive information through
+            You requested a personal record check on yourself. The provider may collect sensitive information through
             its hosted flow; LegalEase avoids storing SSNs, full dates of birth, driver license numbers, and unnecessary
-            sensitive provider data.
+            provider data.
           </p>
           <p>
-            <a className="button" href={invitationUrl}>
-              Complete your secure Checkr invitation
+            <a className="button" href={dashboardState.invitationUrl}>
+              Complete secure check
             </a>
           </p>
         </section>
       ) : null}
-      <h2>Private Record Review</h2>
-      <p className="muted">
-        Your dashboard will organize your review status, findings, documents, notes, and clear next-step guidance as
-        they become available.
-      </p>
+      {dashboardState.reviewStatus === "review_ready" ? (
+        <section>
+          <h2>Your summary</h2>
+          <p className="muted">Your private summary is ready. Review it carefully and contact support with access questions.</p>
+        </section>
+      ) : (
+        <section>
+          <h2>Your summary</h2>
+          <p className="muted">Your summary will appear here after your report is received and reviewed.</p>
+        </section>
+      )}
+      <section>
+        <h2>Documents, notes, Wilma, and support</h2>
+        <p className="muted">Use these tools when they are relevant to your current review status.</p>
+      </section>
       <p>
         <Link href="/privacy">Privacy</Link> · <Link href="/terms">Terms</Link> ·{" "}
         <Link href="/support">Support</Link> · <Link href="/data-deletion">Data deletion</Link>
@@ -42,15 +69,67 @@ export default async function DashboardPage() {
   );
 }
 
-async function getLatestInvitationUrl(email: string): Promise<string | null> {
+type DashboardState = {
+  invitationUrl: string | null;
+  providerStatus: ProviderStatus;
+  reviewStatus: ReviewStatus;
+  qaStatus: "qa_not_required" | "qa_required" | "qa_in_progress" | "qa_overdue" | "qa_approved";
+  lastUpdatedAt: Date;
+};
+
+async function getDashboardState(email: string): Promise<DashboardState> {
   try {
-    const invitation = await prisma.providerInvitation.findFirst({
-      where: { candidate: { email }, invitationUrl: { not: "" } },
-      orderBy: { createdAt: "desc" },
-      select: { invitationUrl: true }
-    });
-    return invitation?.invitationUrl ?? null;
+    const [invitation, report] = await Promise.all([
+      prisma.providerInvitation.findFirst({
+        where: { candidate: { email } },
+        orderBy: { createdAt: "desc" },
+        select: { invitationUrl: true, status: true, createdAt: true, updatedAt: true, expiresAt: true }
+      }),
+      prisma.providerReport.findFirst({
+        where: { candidate: { email } },
+        orderBy: { updatedAt: "desc" },
+        select: {
+          status: true,
+          completedAt: true,
+          updatedAt: true,
+          reportSummary: { select: { id: true } }
+        }
+      })
+    ]);
+
+    const providerStatus = deriveProviderStatus(invitation, report);
+    return {
+      invitationUrl: invitation?.invitationUrl || null,
+      providerStatus,
+      reviewStatus: report?.reportSummary ? "review_ready" : providerStatus === "report_received" ? "review_in_progress" : "review_not_started",
+      qaStatus: "qa_not_required",
+      lastUpdatedAt: report?.updatedAt ?? invitation?.updatedAt ?? invitation?.createdAt ?? new Date()
+    };
   } catch {
-    return null;
+    return {
+      invitationUrl: null,
+      providerStatus: "provider_invite_pending",
+      reviewStatus: "review_not_started",
+      qaStatus: "qa_not_required",
+      lastUpdatedAt: new Date()
+    };
   }
+}
+
+function deriveProviderStatus(
+  invitation:
+    | { invitationUrl: string; status: string; expiresAt: Date | null }
+    | null,
+  report:
+    | { status: string; completedAt: Date | null }
+    | null
+): ProviderStatus {
+  if (report?.completedAt || report?.status === "complete" || report?.status === "completed") return "report_received";
+  if (report?.status === "suspended") return "provider_needs_action";
+  if (report?.status === "canceled") return "provider_check_failed";
+  if (report?.status) return "provider_check_in_progress";
+  if ((invitation?.expiresAt && invitation.expiresAt.getTime() < Date.now()) || invitation?.status === "expired") return "provider_link_expired";
+  if (invitation?.status === "completed") return "provider_check_in_progress";
+  if (invitation?.invitationUrl) return "provider_check_not_started";
+  return "provider_invite_pending";
 }

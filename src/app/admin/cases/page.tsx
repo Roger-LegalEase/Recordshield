@@ -2,6 +2,12 @@ import Link from "next/link";
 import { requireAdmin } from "@/lib/auth";
 import { listAdminCaseRows, type AdminOpsDatabase } from "@/lib/admin-ops";
 import { prisma } from "@/lib/prisma";
+import {
+  deriveRecordShieldStatus,
+  type PaymentStatus,
+  type ProviderStatus,
+  type ReviewStatus
+} from "@/lib/recordshield/status-orchestration";
 
 type SearchParams = Record<string, string | undefined>;
 
@@ -12,7 +18,19 @@ export default async function AdminCasesPage({ searchParams }: { searchParams: P
     if (filters.summaryStatus && row.displayState.summaryStatus !== filters.summaryStatus) return false;
     if (filters.manualReviewNeeded === "true" && !row.displayState.manualReviewNeeded) return false;
     return true;
-  });
+  }).map((row) => ({
+    ...row,
+    operationalStatus: deriveRecordShieldStatus({
+      paymentStatus: mapPaymentStatus(row.displayState.paymentStatus),
+      accountStatus: row.email ? "dashboard_access_granted" : "account_missing",
+      providerStatus: mapProviderStatus(row.displayState.invitationStatus, row.displayState.reportStatus),
+      reviewStatus: mapReviewStatus(row.displayState.summaryStatus),
+      qaStatus: row.displayState.manualReviewNeeded ? "qa_required" : "qa_not_required",
+      refundStatus: "refund_none",
+      deletionStatus: row.displayState.anonymizationStatus === "requested" ? "deletion_requested" : "deletion_none",
+      lastUpdatedAt: row.latestAuditAt ?? new Date()
+    })
+  }));
 
   return (
     <div className="panel">
@@ -76,6 +94,8 @@ export default async function AdminCasesPage({ searchParams }: { searchParams: P
             <th>AI summary</th>
             <th>Readiness</th>
             <th>Monitoring</th>
+            <th>Operational queue</th>
+            <th>Severity</th>
             <th>Latest audit</th>
             <th>Action</th>
           </tr>
@@ -93,6 +113,8 @@ export default async function AdminCasesPage({ searchParams }: { searchParams: P
               <td>{row.summaryStatus}</td>
               <td>{row.expungementReadinessStatus}</td>
               <td>{row.monitoringStatus}</td>
+              <td>{row.operationalStatus.nextAdminAction}</td>
+              <td>{row.operationalStatus.supportSeverity}</td>
               <td>{row.latestAuditAt?.toLocaleString() ?? "none"}</td>
               <td>
                 <Link href={`/admin/cases/${row.id}`}>View details</Link>
@@ -103,4 +125,27 @@ export default async function AdminCasesPage({ searchParams }: { searchParams: P
       </table>
     </div>
   );
+}
+
+function mapPaymentStatus(status: string): PaymentStatus {
+  if (status === "PAID") return "payment_succeeded";
+  if (status === "PAYMENT_FAILED") return "payment_failed";
+  return "payment_pending";
+}
+
+function mapProviderStatus(invitationStatus: string, reportStatus: string): ProviderStatus {
+  if (reportStatus === "complete" || reportStatus === "completed") return "report_received";
+  if (reportStatus === "suspended") return "provider_needs_action";
+  if (reportStatus === "canceled") return "provider_check_failed";
+  if (reportStatus && reportStatus !== "none") return "provider_check_in_progress";
+  if (invitationStatus === "expired") return "provider_link_expired";
+  if (invitationStatus === "completed") return "provider_check_in_progress";
+  if (invitationStatus && invitationStatus !== "none") return "provider_check_not_started";
+  return "provider_invite_pending";
+}
+
+function mapReviewStatus(summaryStatus: string): ReviewStatus {
+  if (summaryStatus === "summary_ready") return "review_ready";
+  if (summaryStatus === "summary_failed") return "review_more_info_needed";
+  return "review_not_started";
 }

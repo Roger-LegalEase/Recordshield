@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { MobileNavMenu } from "@/app/components/MobileNavMenu";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -23,7 +24,7 @@ export default function RootLayout({
             </Link>
             <div className="links">
               <Link href="/#how">How it works</Link>
-              <Link href="/#what-you-get">What you get</Link>
+              <Link href="/#what-you-get">Inside your review</Link>
               <Link href="/#pricing">Pricing</Link>
               <Link href="/ask-wilma">Ask Wilma</Link>
               <Link href="/support">Support</Link>
@@ -31,15 +32,20 @@ export default function RootLayout({
                 Start my private review
               </Link>
             </div>
+            <MobileNavMenu />
           </div>
         </nav>
         <main>{children}</main>
         <footer className="footer">
-          <div>
+          <div className="footer-brand">
+            <strong>RecordShield by LegalEase</strong>
+            <span>© 2026 LegalEase. All rights reserved.</span>
+          </div>
+          <div className="footer-links">
             <Link href="/terms">Terms</Link>
             <Link href="/privacy">Privacy</Link>
             <Link href="/support">Support</Link>
-            <Link href="/personal-use-notice">Personal Use Notice</Link>
+            <Link href="/#personal-use-notice">Personal Use Notice</Link>
           </div>
           <img className="footer-logo" src="/brand/images/legalease-footer-logo.png" alt="LegalEase" />
         </footer>

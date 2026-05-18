@@ -41,8 +41,11 @@ export default defineConfig({
     include: [
 	      "tests/analytics.test.ts",
 	      "tests/env.test.ts",
-	      "tests/product-config.test.ts",
-	      "tests/checkr.test.ts",
+      "tests/product-config.test.ts",
+      "tests/recordshield-guardrails.test.ts",
+      "tests/recordshield-reconciliation.test.ts",
+      "tests/recordshield-status-orchestration.test.ts",
+      "tests/checkr.test.ts",
 	      "tests/provider-runtime-guards.test.ts",
 	      "tests/beta-launch.test.ts",
 	      "tests/admin-case-actions.test.ts",

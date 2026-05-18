@@ -26,7 +26,7 @@ export default function RootLayout({
               <Link href="/ask-wilma">Ask Wilma</Link>
               <Link href="/support">Support</Link>
               <Link href="/dashboard">Account</Link>
-              <Link className="cta" href="/api/checkout/record-check">
+              <Link className="cta" href="/#pricing">
                 Start my private review
               </Link>
             </div>

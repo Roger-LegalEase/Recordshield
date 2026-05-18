@@ -1,4 +1,6 @@
 import Link from "next/link";
+import { RecordCheckCheckoutForm } from "@/app/components/RecordCheckCheckoutForm";
+import { WilmaChatPanel } from "@/app/components/WilmaChatPanel";
 
 const useCases = [
   {
@@ -44,8 +46,6 @@ const includes = [
   "Expungement.ai path if applicable",
 ];
 
-const promptChips = ["Case dismissed", "Completed probation", "Arrest, no conviction", "What may show up?", "Understand a charge"];
-
 export default function HomePage() {
   return (
     <>
@@ -61,7 +61,7 @@ export default function HomePage() {
               landlord, licensing board, or agency asks.
             </p>
             <div className="actions">
-              <Link className="btn primary" href="/api/checkout/record-check">
+              <Link className="btn primary" href="#pricing">
                 Start my private review
               </Link>
               <Link className="btn ghost" href="#how">
@@ -199,9 +199,7 @@ export default function HomePage() {
                 <span>No hidden membership</span>
                 <span>No scare tactics</span>
               </div>
-              <Link className="btn primary" href="/api/checkout/record-check">
-                Start my private review
-              </Link>
+              <RecordCheckCheckoutForm source="pricing" />
             </div>
             <div className="side">
               <div className="monitor">
@@ -265,50 +263,7 @@ export default function HomePage() {
               <p className="wilma-video-caption">General guidance only. No legal advice or outcome guarantees.</p>
             </div>
           </div>
-          <form className="wilma-panel" aria-label="Ask Wilma preview">
-            <div className="wilma-head">
-              <div className="avatar">
-                <img src="/brand/images/wilma-avatar-head.png" alt="" aria-hidden="true" />
-              </div>
-              <div>
-                <h3>Ask Wilma</h3>
-                <p>Clear record guidance</p>
-                <small>General information only</small>
-              </div>
-            </div>
-            <div className="wilma-body">
-              <div className="prompt-row" aria-label="Example prompts">
-                {promptChips.map((chip) => (
-                  <button className="prompt" key={chip} type="button">
-                    {chip}
-                  </button>
-                ))}
-              </div>
-              <label className="field" htmlFor="wilma-state">
-                Record state
-              </label>
-              <select id="wilma-state" name="state" defaultValue="">
-                <option value="">Select a state</option>
-                <option value="CA">California</option>
-                <option value="IL">Illinois</option>
-                <option value="NY">New York</option>
-                <option value="TX">Texas</option>
-              </select>
-              <label className="field" htmlFor="wilma-situation">
-                What happened?
-              </label>
-              <textarea
-                id="wilma-situation"
-                name="situation"
-                placeholder="Briefly describe the situation. Do not include SSNs, full birth dates, driver license numbers, or other sensitive identifiers."
-              />
-              <p className="small">Wilma gives general information only and does not guarantee outcomes.</p>
-              <br />
-              <button className="btn primary" type="button">
-                Ask Wilma
-              </button>
-            </div>
-          </form>
+          <WilmaChatPanel />
         </div>
       </section>
 

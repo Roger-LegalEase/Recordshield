@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { useMemo, useState } from "react";
 import type { FormEvent } from "react";
 
@@ -108,7 +109,13 @@ export function WilmaChatPanel() {
     <form className="wilma-panel rs-wilma-panel" aria-label="Ask Wilma" onSubmit={askWilma}>
       <div className="wilma-head">
         <div className="avatar">
-          <img src="/brand/images/wilma-avatar-head.png" alt="" aria-hidden="true" />
+          <Image
+            src="/brand/images/wilma-avatar-head.png"
+            alt=""
+            aria-hidden="true"
+            width={84}
+            height={84}
+          />
         </div>
         <div>
           <h3>Ask Wilma</h3>

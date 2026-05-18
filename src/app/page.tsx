@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import { RecordCheckCheckoutForm } from "@/app/components/RecordCheckCheckoutForm";
 
 const scenarioCards = [
@@ -92,7 +93,13 @@ export default function HomePage() {
             </div>
           </div>
           <figure className="life rs-hero-status-visual" aria-label="RecordShield review status">
-            <img src="/brand/images/hero-lifestyle.png" alt="Person privately reviewing their RecordShield dashboard at home" />
+            <Image
+              src="/brand/images/hero-lifestyle.png"
+              alt="Person privately reviewing their RecordShield dashboard at home"
+              fill
+              priority
+              sizes="(max-width: 1040px) calc(100vw - 56px), 620px"
+            />
             <div className="float-card rs-status-card" aria-label="RecordShield dashboard preview">
               <div className="top">
                 <span>RecordShield Private Review</span>

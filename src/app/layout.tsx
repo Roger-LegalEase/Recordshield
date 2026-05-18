@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import Link from "next/link";
 import { MobileNavMenu } from "@/app/components/MobileNavMenu";
 import "./globals.css";
@@ -20,7 +21,14 @@ export default function RootLayout({
         <nav className="nav" aria-label="Main navigation">
           <div className="nav-inner">
             <Link href="/" aria-label="RecordShield home">
-              <img className="logo" src="/brand/images/recordshield-header-logo.png" alt="RecordShield by LegalEase" />
+              <Image
+                className="logo"
+                src="/brand/images/recordshield-header-logo.png"
+                alt="RecordShield by LegalEase"
+                width={430}
+                height={96}
+                priority
+              />
             </Link>
             <div className="links">
               <Link href="/#how">How it works</Link>
@@ -47,7 +55,13 @@ export default function RootLayout({
             <Link href="/support">Support</Link>
             <Link href="/#personal-use-notice">Personal Use Notice</Link>
           </div>
-          <img className="footer-logo" src="/brand/images/legalease-footer-logo.png" alt="LegalEase" />
+          <Image
+            className="footer-logo"
+            src="/brand/images/legalease-footer-logo.png"
+            alt="LegalEase"
+            width={174}
+            height={54}
+          />
         </footer>
       </body>
     </html>

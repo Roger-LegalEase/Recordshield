@@ -14,7 +14,6 @@ type RecordCheckCheckoutFormProps = {
 
 export function RecordCheckCheckoutForm({ source }: RecordCheckCheckoutFormProps) {
   const [email, setEmail] = useState("");
-  const [inviteCode, setInviteCode] = useState("");
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
 
@@ -29,7 +28,6 @@ export function RecordCheckCheckoutForm({ source }: RecordCheckCheckoutFormProps
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           email,
-          inviteCode: inviteCode || undefined,
           source
         })
       });
@@ -68,25 +66,12 @@ export function RecordCheckCheckoutForm({ source }: RecordCheckCheckoutFormProps
           {loading ? "Starting..." : "Start my private review"}
         </button>
       </div>
-      <label className="field sr-only" htmlFor={`${source}-invite-code`}>
-        Invite code
-      </label>
-      <input
-        id={`${source}-invite-code`}
-        className="rs-invite-input"
-        name="inviteCode"
-        type="text"
-        autoComplete="off"
-        placeholder="Invite code, if you have one"
-        value={inviteCode}
-        onChange={(event) => setInviteCode(event.target.value)}
-      />
       {error ? (
         <p className="rs-form-error" role="alert">
           {error}
         </p>
       ) : (
-        <p className="small">You will complete payment in Stripe. No subscription.</p>
+        <p className="small">You will complete payment in Stripe.</p>
       )}
     </form>
   );

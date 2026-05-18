@@ -1,0 +1,12 @@
+<svg width="900" height="900" viewBox="0 0 900 900" fill="none" xmlns="http://www.w3.org/2000/svg">
+<rect width="900" height="900" rx="80" fill="#F6F1E8"/>
+<circle cx="450" cy="445" r="300" fill="#EAF6F5"/>
+<path d="M450 150L670 230V420C670 575 579 708 450 760C321 708 230 575 230 420V230L450 150Z" fill="#0B1220"/>
+<path d="M450 190L635 257V420C635 552 559 665 450 715C341 665 265 552 265 420V257L450 190Z" fill="#0E4F8A"/>
+<path d="M450 233L592 285V421C592 527 534 621 450 666C366 621 308 527 308 421V285L450 233Z" fill="#FFFFFF" opacity=".95"/>
+<path d="M367 448L424 505L542 365" stroke="#0F8B8D" stroke-width="38" stroke-linecap="round" stroke-linejoin="round"/>
+<rect x="208" y="665" width="484" height="86" rx="43" fill="#0B1220"/>
+<text x="450" y="719" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="34" font-weight="800" fill="#FFFFFF">Private Record Review</text>
+<circle cx="665" cy="216" r="48" fill="#FF4D1D"/>
+<circle cx="665" cy="216" r="18" fill="#FFFFFF"/>
+</svg>

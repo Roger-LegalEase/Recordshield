@@ -1,0 +1,27 @@
+{
+  "brand": "RecordShield by LegalEase",
+  "positioning": "A private, plain-English record check and review experience for consumers who need clarity before their next opportunity.",
+  "colors": {
+    "navy": "#0B1220",
+    "ink": "#101827",
+    "blue": "#0E4F8A",
+    "teal": "#0F8B8D",
+    "orange": "#FF4D1D",
+    "cream": "#F6F1E8",
+    "mist": "#EAF6F5",
+    "slate": "#667085",
+    "white": "#FFFFFF"
+  },
+  "type": {
+    "headline": "Use a strong editorial sans or serif pairing. Recommended: Inter for UI, Fraunces/Newsreader for emotional headlines.",
+    "ui": "Inter, system-ui, sans-serif"
+  },
+  "radius": {
+    "card": "24px",
+    "button": "14px",
+    "pill": "999px"
+  },
+  "shadow": {
+    "soft": "0 24px 80px rgba(11,18,32,.12)"
+  }
+}

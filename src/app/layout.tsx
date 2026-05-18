@@ -3,26 +3,45 @@ import Link from "next/link";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "LegalEase RecordShield",
-  description: "RecordShield foundation for customer and admin workflows."
+  title: "RecordShield by LegalEase",
+  description:
+    "A private record review that helps consumers understand what may appear and see their next move.",
 };
 
-export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
+export default function RootLayout({
+  children,
+}: Readonly<{
+  children: React.ReactNode;
+}>) {
   return (
     <html lang="en">
       <body>
-        <div className="app-shell">
-          <header className="topbar">
-            <Link className="brand" href="/">
-              LegalEase RecordShield
+        <nav className="nav" aria-label="Main navigation">
+          <div className="nav-inner">
+            <Link href="/" aria-label="RecordShield home">
+              <img className="logo" src="/brand/images/recordshield-header-logo.png" alt="RecordShield by LegalEase" />
             </Link>
-            <nav aria-label="Primary navigation">
+            <div className="links">
               <Link href="/dashboard">Dashboard</Link>
-              <Link href="/admin">Admin</Link>
-            </nav>
-          </header>
-          <main className="content">{children}</main>
-        </div>
+              <Link href="/ask-wilma">Ask Wilma</Link>
+              <Link href="/support">Support</Link>
+              <Link href="/dashboard">Account</Link>
+              <Link className="cta" href="/api/checkout/record-check">
+                Start my private review
+              </Link>
+            </div>
+          </div>
+        </nav>
+        <main>{children}</main>
+        <footer className="footer">
+          <div>
+            <Link href="/terms">Terms</Link>
+            <Link href="/privacy">Privacy</Link>
+            <Link href="/support">Support</Link>
+            <Link href="/beta-disclaimer">Personal Use Notice</Link>
+          </div>
+          <img className="footer-logo" src="/brand/images/legalease-footer-logo.png" alt="LegalEase" />
+        </footer>
       </body>
     </html>
   );

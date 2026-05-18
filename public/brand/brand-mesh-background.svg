@@ -1,0 +1,21 @@
+<svg width="1600" height="1000" viewBox="0 0 1600 1000" fill="none" xmlns="http://www.w3.org/2000/svg">
+<rect width="1600" height="1000" fill="#F6F1E8"/>
+<radialGradient id="g1" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(260 180) rotate(44) scale(650 420)">
+<stop stop-color="#DDF3F1"/><stop offset="1" stop-color="#DDF3F1" stop-opacity="0"/>
+</radialGradient>
+<radialGradient id="g2" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(1320 260) rotate(135) scale(520 360)">
+<stop stop-color="#FFE2D6"/><stop offset="1" stop-color="#FFE2D6" stop-opacity="0"/>
+</radialGradient>
+<radialGradient id="g3" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(1120 880) rotate(18) scale(650 300)">
+<stop stop-color="#DCEBFF"/><stop offset="1" stop-color="#DCEBFF" stop-opacity="0"/>
+</radialGradient>
+<rect width="1600" height="1000" fill="url(#g1)"/>
+<rect width="1600" height="1000" fill="url(#g2)"/>
+<rect width="1600" height="1000" fill="url(#g3)"/>
+<g opacity=".16" stroke="#0B1220">
+<path d="M0 120H1600M0 240H1600M0 360H1600M0 480H1600M0 600H1600M0 720H1600M0 840H1600M0 960H1600"/>
+<path d="M120 0V1000M240 0V1000M360 0V1000M480 0V1000M600 0V1000M720 0V1000M840 0V1000M960 0V1000M1080 0V1000M1200 0V1000M1320 0V1000M1440 0V1000"/>
+</g>
+<path d="M1160 88C1288 118 1367 218 1345 331C1314 489 1125 496 1089 644C1064 746 1168 831 1307 811" stroke="#0F8B8D" stroke-width="6" stroke-linecap="round" opacity=".22"/>
+<path d="M126 822C248 682 417 720 520 587C592 494 533 368 631 276C704 208 835 205 930 252" stroke="#FF4D1D" stroke-width="6" stroke-linecap="round" opacity=".18"/>
+</svg>

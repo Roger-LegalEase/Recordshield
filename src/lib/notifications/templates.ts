@@ -39,7 +39,7 @@ const templates: Record<NotificationTemplateType, NotificationTemplate> = {
   },
   report_ready: {
     subject: "Your RecordShield status has been updated",
-    body: "Your status is ready to review. Log in to view your clear summary and expungement-readiness review."
+    body: "Your status is ready to review. Log in to view your clear summary and possible next steps."
   },
   ai_summary_ready: {
     subject: "Your RecordShield summary is ready",

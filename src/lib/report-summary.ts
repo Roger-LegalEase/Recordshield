@@ -133,7 +133,7 @@ export async function summarizeReportSafely(
   if ((dependencies.configEnv ?? env).AI_SUMMARY_ENABLED !== "true") {
     const failure = {
       providerReportId: input.providerReportId ?? "unknown",
-      error: "AI summary generation is paused for beta. Manual review is pending.",
+      error: "AI summary generation is paused. Manual review is pending.",
       createdAt: new Date().toISOString()
     };
     await persistFailedReportSummary(input, dependencies, failure);
@@ -203,7 +203,7 @@ export function buildReportSummaryInstructions(userState: string): string {
     `Summarize this background report for a customer in ${userState}.`,
     "Do not provide legal advice.",
     "Do not invent facts or eligibility.",
-    "Use only the provided normalized report fields and deterministic expungement-readiness output.",
+    "Use only the provided normalized report fields and deterministic cleanup-readiness analysis.",
     "Include uncertainty and \"consult a qualified attorney\" disclaimer."
   ].join(" ");
 }

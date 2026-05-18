@@ -122,11 +122,11 @@ export function canStartMonitoringCheckout(
 export function betaAccessMessage(reason: BetaAccessReason): string {
   switch (reason) {
     case "beta_disabled":
-      return "RecordShield beta access is temporarily unavailable.";
+      return "RecordShield access is temporarily unavailable.";
     case "invite_required":
-      return "RecordShield beta purchases are invite-only right now.";
+      return "RecordShield purchases are invite-only right now.";
     case "user_limit_reached":
-      return "The current beta cohort is full.";
+      return "The current access limit has been reached.";
     case "record_check_disabled":
       return "Record Check purchases are temporarily paused.";
     case "monitoring_disabled":

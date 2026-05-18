@@ -152,12 +152,11 @@ export function WilmaChatPanel() {
         <textarea
           id="wilma-situation"
           name="situation"
-          placeholder="Briefly describe the situation. Do not include SSNs, full birth dates, driver license numbers, or other sensitive identifiers."
+          placeholder="Briefly describe the situation. Do not include Social Security numbers, full birth dates, driver license numbers, or other sensitive identifiers."
           value={message}
           onChange={(event) => setMessage(event.target.value)}
           required
         />
-        <p className="small">Wilma gives general information only and does not guarantee outcomes.</p>
         <button className="btn primary rs-wilma-submit" type="submit" disabled={loading}>
           {loading ? "Asking..." : "Ask Wilma"}
         </button>

@@ -6,14 +6,14 @@ const useCases = [
   {
     image: "/brand/images/use-case-interview.png",
     alt: "Person privately preparing before an interview",
-    title: "Before the interview",
-    body: "Know what may appear before a job opportunity turns into a background check.",
+    title: "Before a job background check",
+    body: "See what may appear before an employer asks for a background check.",
   },
   {
     image: "/brand/images/use-case-application.png",
     alt: "Person completing a private application at home",
-    title: "Before the application",
-    body: "Understand old records before housing, school, licensing, or volunteer forms ask hard questions.",
+    title: "Before housing or licensing",
+    body: "Understand old records before an application asks questions you are not ready to answer.",
   },
   {
     image: "/brand/images/use-case-clarity.png",
@@ -24,26 +24,56 @@ const useCases = [
 ];
 
 const features = [
-  ["Private record check", "Start through a secure provider flow."],
-  ["Private dashboard", "Track your review, save notes, and keep everything organized in one place."],
-  ["Private Record Review", "See what appears and understand what may matter without decoding confusing record language on your own."],
+  ["Secure personal record check", "Complete a secure check through our secure provider flow."],
+  ["Private dashboard", "Track your review, save notes, and keep everything organized."],
+  ["Easy-to-understand review summary", "See what appears and what may matter before your next application."],
   ["Clear next-step guidance", "If something appears, RecordShield helps you understand whether a cleanup path may be worth exploring."],
 ];
 
 const steps = [
-  ["01", "Start your private review", "Create your secure dashboard and begin your Private Record Review.", ""],
-  ["02", "Complete the secure check", "Follow the provider flow so your report can be requested safely.", "accent"],
-  ["03", "Review what appears", "RecordShield organizes what shows up so you can understand it without guessing.", "accent"],
-  ["04", "See your next move", "If something may be cleanable, we'll show you the next step through LegalEase or Expungement.ai.", ""],
+  ["01", "Start your private review", "Create your secure dashboard and begin your personal record review.", ""],
+  ["02", "Complete the secure check", "Follow the secure provider flow so your report can be requested safely.", "accent"],
+  ["03", "Review what appears", "RecordShield organizes what shows up so you do not have to decode it alone.", "accent"],
+  ["04", "See your next step", "If something may be cleanable, we show you where to go next through LegalEase or Expungement.ai.", ""],
 ];
 
 const includes = [
-  "Private record check",
-  "Secure provider flow",
+  "Secure personal record check",
   "Private dashboard",
-  "Private Record Review",
+  "Easy-to-understand review summary",
   "Clear next-step guidance",
+  "Saved notes and documents",
   "No subscription",
+];
+
+const bestFor = ["Job applications", "Housing applications", "Licensing", "Personal planning", "Expungement readiness"];
+
+const faqs = [
+  [
+    "Is RecordShield a background check company?",
+    "RecordShield helps you request a personal record check through a secure provider flow and then organizes the information in a private dashboard so you can understand what may appear."
+  ],
+  [
+    "Can I use RecordShield to screen someone else?",
+    "No. RecordShield is for your own personal review only. It cannot be used by employers, landlords, lenders, insurers, agencies, or other third parties to screen another person."
+  ],
+  [
+    "Does RecordShield provide legal advice?",
+    "No. RecordShield provides general information and personal planning support. It does not provide legal advice or guarantee outcomes."
+  ],
+  [
+    "What happens if something appears on my record?",
+    "RecordShield helps you understand what appeared and whether a cleanup path may be worth exploring through LegalEase or Expungement.ai."
+  ],
+  [
+    "Does RecordShield remove records?",
+    "No. RecordShield does not remove, seal, expunge, or change records directly. If cleanup may be worth exploring, we can point you toward next steps."
+  ],
+  ["Is this a subscription?", "No. RecordShield Private Review is a one-time $149 review."],
+  [
+    "What should I avoid entering into Wilma?",
+    "Do not enter Social Security numbers, full birth dates, driver license numbers, or other sensitive identifiers."
+  ]
 ];
 
 export default function HomePage() {
@@ -54,11 +84,11 @@ export default function HomePage() {
           <div>
             <span className="eyebrow">Private Record Review</span>
             <h1 className="h1" id="hero-heading">
-              Know what may show up before it blocks your next move.
+              Know what may show up before it costs you the opportunity.
             </h1>
             <p className="lead">
-              Check your record privately. Understand what appears. Know your next move. Before an employer, landlord, or agency asks,
-              see what may appear for yourself.
+              RecordShield helps you privately check your record, understand what appears, and see your next step before a job, housing,
+              licensing, or agency review catches you off guard.
             </p>
             <div className="actions">
               <Link className="btn primary" href="#pricing">
@@ -67,6 +97,12 @@ export default function HomePage() {
               <Link className="btn ghost" href="#how">
                 See how it works
               </Link>
+            </div>
+            <div className="chips" aria-label="RecordShield trust badges">
+              <span className="chip">Private dashboard</span>
+              <span className="chip">One-time $149 review</span>
+              <span className="chip">No subscription</span>
+              <span className="chip">Clear next-step guidance</span>
             </div>
           </div>
           <figure className="life">
@@ -104,11 +140,11 @@ export default function HomePage() {
 
       <section className="section">
         <div className="container">
-          <span className="eyebrow">Know before they know</span>
+          <span className="eyebrow">Before they ask, know for yourself.</span>
           <h2 className="h2">A private review before an important life move.</h2>
           <p className="body">
-            A record issue can surface at the worst possible time. RecordShield gives you a private way to see what may appear and
-            understand your next move before a job, housing, school, licensing, or volunteer opportunity raises the question.
+            A record issue can come up when you are applying for a job, housing, school, licensing, or a volunteer opportunity.
+            RecordShield gives you a private way to see what may appear, understand what it means, and decide what to do next.
           </p>
           <div className="grid3">
             {useCases.map((card) => (
@@ -123,14 +159,14 @@ export default function HomePage() {
         </div>
       </section>
 
-      <section className="section white">
+      <section className="section white" id="what-you-get">
         <div className="container product">
           <div>
             <span className="eyebrow">What you get</span>
-            <h2 className="h2">More than a report. A private review of what it means.</h2>
+            <h2 className="h2">More than a report. A clearer way to understand your record.</h2>
             <p className="body">
-              RecordShield organizes your Private Record Review, review status, findings, documents, notes, and next steps in one secure
-              dashboard built for personal planning.
+              RecordShield gives you a private dashboard where you can see your check status, review what appears, save notes, and
+              understand possible next steps without sorting through confusing record language on your own.
             </p>
             <div className="features">
               {features.map(([title, body]) => (
@@ -174,50 +210,57 @@ export default function HomePage() {
           <span className="eyebrow">Pricing</span>
           <h2 className="h2">One private review. Clear next steps. No subscription.</h2>
           <p className="body">
-            RecordShield is built for people who need clarity before they apply, move forward, or spend more money trying to understand
-            what may be on their record.
+            For people who need to know what may show up before a job, housing, licensing, or personal decision.
           </p>
           <div className="pricing">
             <div className="price">
               <span className="badge">Private Record Review</span>
               <span className="eyebrow">One-time payment</span>
               <div className="big">$149</div>
-              <p className="small">Launch price available for early users.</p>
               <p className="small">
-                For personal planning only. Not for employment, tenant, credit, insurance, housing, or eligibility screening.
+                Privately check your record, understand what appears, and see possible next steps before an important application or life
+                decision.
               </p>
               <ul>
                 {includes.map((item) => (
                   <li key={item}>{item}</li>
                 ))}
               </ul>
-              <p className="best-for">
-                <strong>Best for:</strong> job applications, housing, licensing, personal planning
-              </p>
+              <div className="best-for">
+                <strong>Best for:</strong>
+                <ul className="best-for-list">
+                  {bestFor.map((item) => (
+                    <li key={item}>{item}</li>
+                  ))}
+                </ul>
+              </div>
               <div className="pricing-trust-row">
                 <span>No subscription</span>
                 <span>No hidden membership</span>
                 <span>No scare tactics</span>
               </div>
               <RecordCheckCheckoutForm source="pricing" />
+              <p className="small">For your own personal review only. Not for screening other people.</p>
             </div>
             <div className="side">
               <div className="monitor">
-                <h3>RecordShield Private Review</h3>
+                <h3>Checkout summary</h3>
                 <p>
-                  Know what may show up before it blocks your next move, with a private dashboard and clear next-step guidance.
+                  RecordShield Private Review includes one private dashboard, one secure personal record check, and clear next-step
+                  guidance for your own planning.
                 </p>
                 <div className="option">
-                  <strong>One-time review</strong>
+                  <strong>RecordShield Private Review</strong>
                   <div className="small">$149</div>
                 </div>
               </div>
               <div className="notice">
                 <h4>Personal use notice</h4>
                 <p>
-                  RecordShield is for personal planning only. It is not an employment, tenant, credit, insurance, housing, or eligibility
-                  screening service. LegalEase does not provide legal advice, determine eligibility, guarantee outcomes, or negotiate on
-                  your behalf.
+                  RecordShield is for your own personal review and planning. It is not a service for employers, landlords, lenders,
+                  insurers, agencies, or other third parties to screen, rank, approve, deny, or make eligibility decisions about another
+                  person. LegalEase does not provide legal advice, guarantee outcomes, determine court eligibility, or change provider
+                  records directly.
                 </p>
               </div>
             </div>
@@ -230,8 +273,11 @@ export default function HomePage() {
           <div>
             <span className="eyebrow">Meet Wilma</span>
             <h2>Clear guidance when record language gets confusing.</h2>
-            <p>Wilma helps you understand record terms, organize your facts, and think through general next steps.</p>
-            <p className="wilma-note">General information only. No legal advice or outcome guarantees.</p>
+            <p>
+              Wilma can explain common record terms, help organize your facts, and point you toward possible self-help next steps when
+              appropriate.
+            </p>
+            <p className="wilma-note">Wilma gives general information only. She does not provide legal advice or guarantee outcomes.</p>
             <div className="wilma-guide-card">
               <video
                 className="wilma-guide-video"
@@ -245,7 +291,6 @@ export default function HomePage() {
               >
                 <source src="/brand/images/wilma-recordshield-loop.mp4" type="video/mp4" />
               </video>
-              <p className="wilma-video-caption">General guidance only. No legal advice or outcome guarantees.</p>
             </div>
           </div>
           <WilmaChatPanel />
@@ -261,10 +306,26 @@ export default function HomePage() {
           <div className="notice notice-spaced">
             <h4>Personal use notice</h4>
             <p>
-              RecordShield is for personal planning only. It is not an employment, tenant, credit, insurance, housing, or eligibility
-              screening service. RecordShield does not provide legal advice or guarantee that your record can be expunged, sealed, removed,
-              or changed.
+              RecordShield is for your own personal review and planning. It is not a service for employers, landlords, lenders, insurers,
+              agencies, or other third parties to screen, rank, approve, deny, or make eligibility decisions about another person.
+              LegalEase does not provide legal advice, guarantee outcomes, determine court eligibility, or change provider records
+              directly.
             </p>
+          </div>
+        </div>
+      </section>
+
+      <section className="section" id="faq">
+        <div className="container">
+          <span className="eyebrow">Questions</span>
+          <h2 className="h2">Frequently asked questions</h2>
+          <div className="faq-grid">
+            {faqs.map(([question, answer]) => (
+              <article className="faq-card" key={question}>
+                <h3>{question}</h3>
+                <p>{answer}</p>
+              </article>
+            ))}
           </div>
         </div>
       </section>

@@ -2,7 +2,7 @@ import { WilmaChatPanel } from "@/app/components/WilmaChatPanel";
 
 export const metadata = {
   title: "Ask Wilma | RecordShield",
-  description: "Ask Wilma for general record guidance and next-step screening."
+  description: "Ask Wilma for general record guidance and possible next steps."
 };
 
 export default function AskWilmaPage() {
@@ -13,10 +13,12 @@ export default function AskWilmaPage() {
           <span className="eyebrow">Ask Wilma</span>
           <h1 className="h2 light">Clear record guidance without guessing.</h1>
           <p className="body muted-light">
-            Share the state and a short description of what happened. Wilma gives general information, helps organize facts, and can
-            point you toward available self-help document-prep next steps when appropriate.
+            Choose your state and briefly describe what happened. Wilma can explain common record terms, help organize your facts, and
+            point you toward possible self-help next steps when appropriate.
           </p>
-          <p className="rs-wilma-note">Do not enter SSNs, full birth dates, driver license numbers, or other sensitive identifiers.</p>
+          <p className="rs-wilma-note">
+            Do not enter Social Security numbers, full birth dates, driver license numbers, or other sensitive identifiers.
+          </p>
         </div>
         <WilmaChatPanel />
       </div>

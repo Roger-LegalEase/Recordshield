@@ -64,7 +64,7 @@ function collectRecordFindings(
     return;
   }
   if (record.recordType === "conviction" || record.dispositionCategory === "conviction") {
-    reasons.push(`${label}: reported as a conviction, so the placeholder rule requires attorney review.`);
+    reasons.push(`${label}: reported as a conviction, so the current rule requires attorney review.`);
     return;
   }
   if (record.recordType === "arrest") {

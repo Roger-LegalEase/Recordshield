@@ -613,7 +613,7 @@ function createOpenAIExtractor(configEnv: Env): WilmaOpenAIClient {
             {
               role: "system",
 	              content:
-	                "Extract expungement-readiness facts from the user message. Return JSON only. Do not invent facts. Use null when the message does not provide a value."
+	                "Extract cleanup-readiness facts from the user message. Return JSON only. Do not invent facts. Use null when the message does not provide a value."
             },
             {
               role: "user",

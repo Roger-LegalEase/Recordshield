@@ -5,7 +5,7 @@ import "./globals.css";
 export const metadata: Metadata = {
   title: "RecordShield by LegalEase",
   description:
-    "A private record review that helps consumers understand what may appear and see their next move.",
+    "A private record review that helps consumers understand what may appear and see their next step.",
 };
 
 export default function RootLayout({
@@ -22,10 +22,11 @@ export default function RootLayout({
               <img className="logo" src="/brand/images/recordshield-header-logo.png" alt="RecordShield by LegalEase" />
             </Link>
             <div className="links">
-              <Link href="/dashboard">Dashboard</Link>
+              <Link href="/#how">How it works</Link>
+              <Link href="/#what-you-get">What you get</Link>
+              <Link href="/#pricing">Pricing</Link>
               <Link href="/ask-wilma">Ask Wilma</Link>
               <Link href="/support">Support</Link>
-              <Link href="/dashboard">Account</Link>
               <Link className="cta" href="/#pricing">
                 Start my private review
               </Link>
@@ -38,7 +39,7 @@ export default function RootLayout({
             <Link href="/terms">Terms</Link>
             <Link href="/privacy">Privacy</Link>
             <Link href="/support">Support</Link>
-            <Link href="/beta-disclaimer">Personal Use Notice</Link>
+            <Link href="/personal-use-notice">Personal Use Notice</Link>
           </div>
           <img className="footer-logo" src="/brand/images/legalease-footer-logo.png" alt="LegalEase" />
         </footer>

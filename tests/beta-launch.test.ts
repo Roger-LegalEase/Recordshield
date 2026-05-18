@@ -9,8 +9,8 @@ import {
 } from "@/lib/beta";
 import { notificationTemplateTypes, renderNotificationTemplate } from "@/lib/notifications/templates";
 import { preferredCustomerTerms, prohibitedCustomerTerms } from "@/lib/legal-copy";
-import BetaDisclaimerPage from "@/app/beta-disclaimer/page";
 import DataDeletionPage from "@/app/data-deletion/page";
+import PersonalUseNoticePage from "@/app/personal-use-notice/page";
 import PrivacyPage from "@/app/privacy/page";
 import SupportPage from "@/app/support/page";
 import TermsPage from "@/app/terms/page";
@@ -97,19 +97,19 @@ describe("beta launch controls", () => {
   });
 });
 
-describe("legal placeholder pages and copy", () => {
-  it("renders required placeholder pages", () => {
+describe("consumer-safe legal pages and copy", () => {
+  it("renders required legal pages", () => {
     (globalThis as typeof globalThis & { React?: typeof React }).React = React;
     expect(TermsPage()).toBeTruthy();
     expect(PrivacyPage()).toBeTruthy();
-    expect(BetaDisclaimerPage()).toBeTruthy();
+    expect(PersonalUseNoticePage()).toBeTruthy();
     expect(SupportPage()).toBeTruthy();
     expect(DataDeletionPage()).toBeTruthy();
   });
 
   it("tracks preferred and prohibited customer-facing legal copy terms", () => {
     expect(preferredCustomerTerms).toContain("Consumer self-check");
-    expect(preferredCustomerTerms).toContain("Expungement-readiness review");
+    expect(preferredCustomerTerms).toContain("Possible next steps");
     expect(prohibitedCustomerTerms).toContain("Risk score");
     expect(preferredCustomerTerms).not.toContain("You are eligible");
   });

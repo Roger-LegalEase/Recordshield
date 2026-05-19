@@ -1,5 +1,5 @@
 import Link from "next/link";
-import Image from "next/image";
+import { HeroRecordStage } from "@/app/components/HeroRecordStage";
 import { RecordCheckCheckoutForm } from "@/app/components/RecordCheckCheckoutForm";
 
 const scenarioCards = [
@@ -92,38 +92,7 @@ export default function HomePage() {
               <span className="chip">Private dashboard</span>
             </div>
           </div>
-          <figure className="life rs-hero-status-visual" aria-label="RecordShield review status">
-            <Image
-              src="/brand/images/hero-lifestyle.png"
-              alt="Person privately reviewing their RecordShield dashboard at home"
-              fill
-              priority
-              sizes="(max-width: 1040px) calc(100vw - 56px), 620px"
-            />
-            <div className="float-card rs-status-card" aria-label="RecordShield dashboard preview">
-              <div className="top">
-                <span>RecordShield Private Review</span>
-                <strong>$149</strong>
-              </div>
-              <div className="bar" aria-hidden="true">
-                <span />
-              </div>
-              <div className="mini rs-status-mini">
-                <div>
-                  <strong>Secure Check</strong>
-                  <p>In progress</p>
-                </div>
-                <div>
-                  <strong>Private Summary</strong>
-                  <p>Preparing review</p>
-                </div>
-                <div>
-                  <strong>Next Step</strong>
-                  <p>Available after review</p>
-                </div>
-              </div>
-            </div>
-          </figure>
+          <HeroRecordStage />
         </div>
       </section>
 

@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { RecordShieldStatusPanel } from "@/app/components/RecordShieldStatusPanel";
 import { requireUser, type AppUser } from "@/lib/auth";
+import { trackAnalyticsEvent } from "@/lib/analytics";
 import { prisma } from "@/lib/prisma";
 import {
   deriveRecordShieldStatus,
@@ -50,6 +51,11 @@ export default async function DashboardPage() {
         <section>
           <h2>Your summary</h2>
           <p className="muted">Your private summary is ready. Review it carefully and contact support with access questions.</p>
+          <form action={trackCleanupCtaClick}>
+            <button className="button" type="submit">
+              Explore cleanup review
+            </button>
+          </form>
         </section>
       ) : (
         <section>
@@ -67,6 +73,20 @@ export default async function DashboardPage() {
       </p>
     </div>
   );
+}
+
+async function trackCleanupCtaClick() {
+  "use server";
+  const user = await requireUser();
+  await trackAnalyticsEvent(prisma, {
+    event: "cleanup_cta_click",
+    actorUserId: user.id,
+    actorEmail: user.email,
+    targetType: "Dashboard",
+    metadata: {
+      source: "dashboard_summary"
+    }
+  });
 }
 
 type DashboardState = {

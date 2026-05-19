@@ -58,6 +58,22 @@ describe("requestDocumentPrepHandoff", () => {
         })
       })
     );
+    expect(db.auditEvent.create).toHaveBeenCalledWith(
+      expect.objectContaining({
+        data: expect.objectContaining({
+          action: "analytics.expungement_ai_intake_started",
+          targetId: "decision_123"
+        })
+      })
+    );
+    expect(db.auditEvent.create).toHaveBeenCalledWith(
+      expect.objectContaining({
+        data: expect.objectContaining({
+          action: "analytics.packet_generated",
+          targetId: "decision_123"
+        })
+      })
+    );
     expect(db.caseNotice.create).toHaveBeenCalledWith(
       expect.objectContaining({
         data: expect.objectContaining({

@@ -24,7 +24,17 @@ export const analyticsFunnelEvents = [
   "support_requested"
 ] as const;
 
-export type AnalyticsFunnelEvent = (typeof analyticsFunnelEvents)[number];
+export const conversionTrackingEvents = [
+  "recordshield_start",
+  "recordshield_completion",
+  "cleanup_cta_click",
+  "expungement_ai_intake_started",
+  "payment_completed",
+  "packet_generated"
+] as const;
+
+export type ConversionTrackingEvent = (typeof conversionTrackingEvents)[number];
+export type AnalyticsFunnelEvent = (typeof analyticsFunnelEvents)[number] | ConversionTrackingEvent;
 
 export type AnalyticsDatabase = {
   auditEvent: {
@@ -42,7 +52,10 @@ export type AnalyticsDatabase = {
 };
 
 export function isAnalyticsFunnelEvent(value: string): value is AnalyticsFunnelEvent {
-  return (analyticsFunnelEvents as readonly string[]).includes(value);
+  return (
+    (analyticsFunnelEvents as readonly string[]).includes(value) ||
+    (conversionTrackingEvents as readonly string[]).includes(value)
+  );
 }
 
 const sensitiveAnalyticsKeys = [

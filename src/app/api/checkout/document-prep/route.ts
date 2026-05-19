@@ -62,6 +62,17 @@ export async function POST(request: Request) {
         checkoutUrlCreated: Boolean(session.url)
       }
     });
+    await trackAnalyticsEvent(prisma, {
+      event: "cleanup_cta_click",
+      actorUserId: wilmaSession.userId,
+      actorEmail: wilmaSession.leadEmail,
+      targetType: "WilmaChatSession",
+      targetId: wilmaSession.id,
+      metadata: {
+        productKey: "document_prep",
+        wilmaDecisionId: wilmaSession.decisionId
+      }
+    });
 
     return NextResponse.json({ url: session.url }, { status: 201 });
   } catch (error) {

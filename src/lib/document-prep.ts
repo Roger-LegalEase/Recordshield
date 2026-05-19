@@ -100,6 +100,22 @@ export async function requestDocumentPrepHandoff(
     }
   });
   await trackAnalyticsEvent(db, {
+    event: "expungement_ai_intake_started",
+    actorUserId: session.userId,
+    actorEmail: session.leadEmail ?? undefined,
+    targetType: "WilmaDecision",
+    targetId: input.wilmaDecisionId,
+    metadata
+  });
+  await trackAnalyticsEvent(db, {
+    event: "packet_generated",
+    actorUserId: session.userId,
+    actorEmail: session.leadEmail ?? undefined,
+    targetType: "WilmaDecision",
+    targetId: input.wilmaDecisionId,
+    metadata
+  });
+  await trackAnalyticsEvent(db, {
     event: "document_generated",
     actorUserId: session.userId,
     actorEmail: session.leadEmail ?? undefined,

@@ -112,6 +112,11 @@ describe("Stripe webhook processing", () => {
       })
     );
     expect(db.authMagicLink.create).toHaveBeenCalledOnce();
+    expect(db.auditEvent.create).toHaveBeenCalledWith(
+      expect.objectContaining({
+        data: expect.objectContaining({ action: "analytics.payment_completed" })
+      })
+    );
   });
 
   it("does not apply duplicate provider events", async () => {

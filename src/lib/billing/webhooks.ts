@@ -256,6 +256,20 @@ async function handleCheckoutSessionCompleted(
           stripePaymentIntentId: paymentIntentId
         }
       });
+      await trackAnalyticsEvent(db, {
+        event: "payment_completed",
+        actorUserId: resolvedUserId,
+        actorEmail: email ?? undefined,
+        targetType: "ProductOrder",
+        targetId: session.id,
+        metadata: {
+          productKey: session.metadata?.productKey ?? "record_check",
+          amountCents: session.amount_total ?? 0,
+          currency: session.currency ?? "usd",
+          stripeCheckoutSessionId: session.id,
+          stripePaymentIntentId: paymentIntentId
+        }
+      });
     }
 
     if (status === "PAID" && (session.metadata?.productKey ?? "record_check") === "record_check") {

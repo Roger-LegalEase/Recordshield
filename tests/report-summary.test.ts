@@ -41,6 +41,7 @@ describe("summarizeReport", () => {
       };
     });
     const upsert = vi.fn(async () => ({}));
+    const auditCreate = vi.fn(async () => ({}));
 
     const result = await summarizeReport(
       {
@@ -57,7 +58,7 @@ describe("summarizeReport", () => {
       },
       {
         client: { responses: { create } },
-        db: { reportSummary: { upsert } },
+        db: { reportSummary: { upsert }, auditEvent: { create: auditCreate } },
         model: "gpt-test-summary"
       }
     );
@@ -85,7 +86,7 @@ describe("summarizeReport", () => {
     expect(instructions).toContain("Do not provide legal advice.");
     expect(instructions).toContain("Do not invent facts or eligibility.");
     expect(instructions).toContain(
-      "Use only the provided normalized report fields and deterministic expungement-readiness output."
+      "Use only the provided normalized report fields and deterministic cleanup-readiness analysis."
     );
     expect(instructions).toContain(
       "Include uncertainty and \"consult a qualified attorney\" disclaimer."
@@ -101,6 +102,15 @@ describe("summarizeReport", () => {
         update: expect.objectContaining({
           confidence: "medium",
           model: "gpt-test-summary"
+        })
+      })
+    );
+    expect(auditCreate).toHaveBeenCalledWith(
+      expect.objectContaining({
+        data: expect.objectContaining({
+          action: "analytics.recordshield_completion",
+          targetType: "ProviderReport",
+          targetId: "provider_report_123"
         })
       })
     );
@@ -123,7 +133,7 @@ describe("summarizeReport", () => {
     expect(instructions).toContain("Do not provide legal advice.");
     expect(instructions).toContain("Do not invent facts or eligibility.");
     expect(instructions).toContain(
-      "Use only the provided normalized report fields and deterministic expungement-readiness output."
+      "Use only the provided normalized report fields and deterministic cleanup-readiness analysis."
     );
 	    expect(instructions).toContain("consult a qualified attorney");
 	  });

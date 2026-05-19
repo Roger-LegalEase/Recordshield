@@ -1,5 +1,6 @@
 import type { Prisma } from "@prisma/client";
 import { z } from "zod";
+import { trackAnalyticsEvent, type AnalyticsDatabase } from "@/lib/analytics";
 import type { Env } from "@/lib/env";
 import { env } from "@/lib/env";
 
@@ -31,7 +32,7 @@ type ReportSummaryDatabase = {
       update: Record<string, unknown>;
     }): Promise<unknown>;
   };
-};
+} & Partial<AnalyticsDatabase>;
 
 export type ReportSummaryFailure = {
   providerReportId: string;
@@ -119,6 +120,15 @@ export async function summarizeReport(
         confidence: summary.confidence,
         model: dependencies.model ?? "gpt-5-mini",
         rawOutput: reportSummaryToJson(summary)
+      }
+    });
+    await trackAnalyticsEvent(dependencies.db, {
+      event: "recordshield_completion",
+      targetType: "ProviderReport",
+      targetId: input.providerReportId,
+      metadata: {
+        confidence: summary.confidence,
+        model: dependencies.model ?? "gpt-5-mini"
       }
     });
   }

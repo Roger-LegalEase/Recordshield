@@ -5,6 +5,12 @@ describe("analytics funnel events", () => {
   it("allowlists funnel event names", () => {
     expect(isAnalyticsFunnelEvent("chat_started")).toBe(true);
     expect(isAnalyticsFunnelEvent("summary_generated")).toBe(true);
+    expect(isAnalyticsFunnelEvent("recordshield_start")).toBe(true);
+    expect(isAnalyticsFunnelEvent("recordshield_completion")).toBe(true);
+    expect(isAnalyticsFunnelEvent("cleanup_cta_click")).toBe(true);
+    expect(isAnalyticsFunnelEvent("expungement_ai_intake_started")).toBe(true);
+    expect(isAnalyticsFunnelEvent("payment_completed")).toBe(true);
+    expect(isAnalyticsFunnelEvent("packet_generated")).toBe(true);
     expect(isAnalyticsFunnelEvent("support_requested")).toBe(true);
     expect(isAnalyticsFunnelEvent("not_real")).toBe(false);
   });

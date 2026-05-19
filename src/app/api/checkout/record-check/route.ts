@@ -57,6 +57,16 @@ export async function POST(request: Request) {
         source: body.source ?? "recordshield"
       }
     });
+    await trackAnalyticsEvent(prisma, {
+      event: "recordshield_start",
+      actorUserId: user.id,
+      actorEmail: user.email,
+      targetType: "ProductOrder",
+      metadata: {
+        productKey: "record_check",
+        source: body.source ?? "recordshield"
+      }
+    });
 
     const response = NextResponse.json({ url: session.url }, { status: 201 });
     response.cookies.set(sessionCookieName, createAuthSessionCookie(user), authSessionCookieOptions());

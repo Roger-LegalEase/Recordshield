@@ -1,11 +1,14 @@
 import type Stripe from "stripe";
 import type { Prisma } from "@prisma/client";
+import { createDashboardMagicLink, type MagicLinkDatabase } from "@/lib/auth-magic-link";
 import { trackAnalyticsEvent } from "@/lib/analytics";
 import { documentPrepProductKey } from "@/lib/billing/products";
+import { env } from "@/lib/env";
 import {
   requestDocumentPrepHandoff,
   type DocumentPrepHandoffDatabase
 } from "@/lib/document-prep";
+import { sendTransactionalEmail } from "@/lib/notifications/email";
 import { redactForStorage } from "@/lib/security/redaction";
 
 type ProductOrderStatus = "PENDING" | "PAID" | "PAYMENT_FAILED" | "CANCELED";
@@ -52,11 +55,13 @@ export type BillingDatabase = {
     }): Promise<unknown>;
   };
   user: {
+    upsert?: MagicLinkDatabase["user"]["upsert"];
     updateMany(args: {
       where: { OR: Array<{ id?: string; email?: string }> };
       data: { stripeCustomerId: string };
     }): Promise<unknown>;
   };
+  authMagicLink?: MagicLinkDatabase["authMagicLink"];
   shieldCase?: {
     findFirst(args: {
       where: {
@@ -200,9 +205,11 @@ async function handleCheckoutSessionCompleted(
   const customerId = getId(session.customer);
   const email = session.customer_details?.email ?? session.customer_email ?? session.metadata?.email;
   const userId = session.metadata?.userId;
+  const billingUser = await ensureBillingUser(db, email, userId);
+  const resolvedUserId = billingUser?.id ?? userId;
 
   if (customerId) {
-    await updateUserStripeCustomerId(db, customerId, userId, email);
+    await updateUserStripeCustomerId(db, customerId, resolvedUserId, email);
   }
 
   if (session.mode === "payment") {
@@ -212,7 +219,7 @@ async function handleCheckoutSessionCompleted(
     await db.productOrder.upsert({
       where: { stripeCheckoutSessionId: session.id },
       create: {
-        userId,
+        userId: resolvedUserId,
         email: email ?? undefined,
         productKey: session.metadata?.productKey ?? "record_check",
         status,
@@ -224,6 +231,8 @@ async function handleCheckoutSessionCompleted(
         paidAt: status === "PAID" ? new Date() : undefined
       },
       update: {
+        userId: resolvedUserId,
+        email: email ?? undefined,
         status,
         amountCents: session.amount_total ?? 0,
         currency: session.currency ?? "usd",
@@ -235,7 +244,7 @@ async function handleCheckoutSessionCompleted(
     if (status === "PAID") {
       await trackAnalyticsEvent(db, {
         event: "paid",
-        actorUserId: userId,
+        actorUserId: resolvedUserId,
         actorEmail: email ?? undefined,
         targetType: "ProductOrder",
         targetId: session.id,
@@ -250,11 +259,23 @@ async function handleCheckoutSessionCompleted(
     }
 
     if (status === "PAID" && (session.metadata?.productKey ?? "record_check") === "record_check") {
-      await ensureRecordCheckCase(db, {
-        userId,
+      const shieldCase = await ensureRecordCheckCase(db, {
+        userId: resolvedUserId,
         email,
         stripeCheckoutSessionId: session.id
       });
+      if (shieldCase && email && hasMagicLinkDatabase(db)) {
+        await createDashboardMagicLink(
+          db,
+          {
+            email,
+            baseUrl: env.APP_BASE_URL,
+            reason: "payment_received",
+            redirectTo: "/dashboard"
+          },
+          { sendEmail: sendTransactionalEmail }
+        );
+      }
     }
 
     if (status === "PAID" && session.metadata?.productKey === documentPrepProductKey && hasDocumentPrepHandoff(db)) {
@@ -302,12 +323,40 @@ function hasDocumentPrepHandoff(db: BillingDatabase): db is BillingDatabase & Do
   return Boolean(db.wilmaChatSession && db.caseNotice && db.auditEvent);
 }
 
+function hasMagicLinkDatabase(db: BillingDatabase): db is BillingDatabase & MagicLinkDatabase {
+  return Boolean(db.user.upsert && db.authMagicLink);
+}
+
+async function ensureBillingUser(
+  db: BillingDatabase,
+  email?: string | null,
+  userId?: string
+): Promise<{ id: string; email: string; role: "CUSTOMER" | "ADMIN" } | null> {
+  if (!db.user.upsert || !email) {
+    return userId ? { id: userId, email: email ?? "", role: "CUSTOMER" } : null;
+  }
+
+  return db.user.upsert({
+    where: { email },
+    create: {
+      ...(userId ? { id: userId } : {}),
+      email,
+      role: "CUSTOMER",
+      leadSource: "stripe_checkout"
+    },
+    update: {
+      leadSource: "stripe_checkout"
+    },
+    select: { id: true, email: true, role: true }
+  });
+}
+
 async function ensureRecordCheckCase(
   db: BillingDatabase,
   input: { userId?: string; email?: string | null; stripeCheckoutSessionId: string }
-): Promise<void> {
+): Promise<{ id: string } | null> {
   if (!db.shieldCase || !input.userId) {
-    return;
+    return null;
   }
 
   const existing = await db.shieldCase.findFirst({
@@ -331,7 +380,7 @@ async function ensureRecordCheckCase(
         }
       }
     });
-    return;
+    return existing;
   }
 
   const shieldCase = await db.shieldCase.create({
@@ -356,6 +405,8 @@ async function ensureRecordCheckCase(
       }
     }
   });
+
+  return shieldCase;
 }
 
 async function handleInvoicePaid(invoice: Stripe.Invoice, db: BillingDatabase): Promise<void> {

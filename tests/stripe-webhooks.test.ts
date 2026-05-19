@@ -20,7 +20,18 @@ function createMockDb(existingEvent = false) {
       upsert: vi.fn(async () => ({}))
     },
     user: {
-      updateMany: vi.fn(async () => ({}))
+      updateMany: vi.fn(async () => ({})),
+      upsert: vi.fn(async () => ({ id: "user_123", email: "customer@example.com", role: "CUSTOMER" }))
+    },
+    shieldCase: {
+      findFirst: vi.fn(async () => null),
+      create: vi.fn(async () => ({ id: "case_123" }))
+    },
+    authMagicLink: {
+      create: vi.fn(async () => ({ id: "link_123" }))
+    },
+    auditEvent: {
+      create: vi.fn(async () => ({}))
     }
   };
 }
@@ -84,6 +95,23 @@ describe("Stripe webhook processing", () => {
         })
       })
     );
+    expect(db.user.upsert).toHaveBeenCalledWith(
+      expect.objectContaining({
+        where: { email: "customer@example.com" },
+        create: expect.objectContaining({ email: "customer@example.com", role: "CUSTOMER" })
+      })
+    );
+    expect(db.shieldCase.create).toHaveBeenCalledWith(
+      expect.objectContaining({
+        data: expect.objectContaining({
+          ownerId: "user_123",
+          productKey: "record_check",
+          displayName: "RecordShield Private Review",
+          status: "IN_REVIEW"
+        })
+      })
+    );
+    expect(db.authMagicLink.create).toHaveBeenCalledOnce();
   });
 
   it("does not apply duplicate provider events", async () => {

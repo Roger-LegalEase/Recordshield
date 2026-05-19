@@ -37,6 +37,8 @@ export const envSchema = z
     OPENAI_API_KEY: z.string().min(1).optional(),
     OPENAI_MODEL: z.string().min(1).default("gpt-4o-mini"),
     OPENAI_REPORT_SUMMARY_MODEL: z.string().min(1).default("gpt-5.2"),
+    EMAIL_PROVIDER_API_KEY: z.string().min(1).optional(),
+    NOTIFICATIONS_WEBHOOK_URL: z.string().url().optional(),
     LAUNCH_STATE: z.string().length(2).default("CA"),
     RATE_LIMIT_REDIS_REST_URL: z.string().url().optional(),
     RATE_LIMIT_REDIS_REST_TOKEN: z.string().min(1).optional(),

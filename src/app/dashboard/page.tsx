@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { RecordShieldStatusPanel } from "@/app/components/RecordShieldStatusPanel";
-import { requireUser } from "@/lib/auth";
+import { requireUser, type AppUser } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import {
   deriveRecordShieldStatus,
@@ -10,7 +10,7 @@ import {
 
 export default async function DashboardPage() {
   const user = await requireUser();
-  const dashboardState = await getDashboardState(user.email);
+  const dashboardState = await getDashboardState(user);
   const derivedStatus = deriveRecordShieldStatus({
     paymentStatus: "payment_succeeded",
     accountStatus: "dashboard_access_granted",
@@ -77,16 +77,24 @@ type DashboardState = {
   lastUpdatedAt: Date;
 };
 
-async function getDashboardState(email: string): Promise<DashboardState> {
+async function getDashboardState(user: AppUser): Promise<DashboardState> {
   try {
-    const [invitation, report] = await Promise.all([
+    const [shieldCase, invitation, report] = await Promise.all([
+      prisma.shieldCase.findFirst({
+        where: {
+          productKey: "record_check",
+          OR: [{ ownerId: user.id }, { owner: { email: user.email } }]
+        },
+        orderBy: { updatedAt: "desc" },
+        select: { id: true, updatedAt: true, createdAt: true }
+      }),
       prisma.providerInvitation.findFirst({
-        where: { candidate: { email } },
+        where: { OR: [{ case: { ownerId: user.id } }, { candidate: { email: user.email } }] },
         orderBy: { createdAt: "desc" },
         select: { invitationUrl: true, status: true, createdAt: true, updatedAt: true, expiresAt: true }
       }),
       prisma.providerReport.findFirst({
-        where: { candidate: { email } },
+        where: { OR: [{ case: { ownerId: user.id } }, { candidate: { email: user.email } }] },
         orderBy: { updatedAt: "desc" },
         select: {
           status: true,
@@ -103,7 +111,7 @@ async function getDashboardState(email: string): Promise<DashboardState> {
       providerStatus,
       reviewStatus: report?.reportSummary ? "review_ready" : providerStatus === "report_received" ? "review_in_progress" : "review_not_started",
       qaStatus: "qa_not_required",
-      lastUpdatedAt: report?.updatedAt ?? invitation?.updatedAt ?? invitation?.createdAt ?? new Date()
+      lastUpdatedAt: report?.updatedAt ?? invitation?.updatedAt ?? invitation?.createdAt ?? shieldCase?.updatedAt ?? shieldCase?.createdAt ?? new Date()
     };
   } catch {
     return {

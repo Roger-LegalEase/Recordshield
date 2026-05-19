@@ -60,8 +60,27 @@ model User {
   providerCandidates   ProviderCandidate[]
   monitoringEnrollments MonitoringEnrollment[]
   wilmaChatSessions    WilmaChatSession[]
+  authMagicLinks        AuthMagicLink[]
   createdAt            DateTime                  @default(now())
   updatedAt            DateTime                  @updatedAt
+}
+
+model AuthMagicLink {
+  id        String    @id @default(cuid())
+  userId    String
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  email     String
+  tokenHash String    @unique
+  reason    String
+  redirectTo String   @default("/dashboard")
+  expiresAt DateTime
+  usedAt    DateTime?
+  createdAt DateTime  @default(now())
+
+  @@index([userId])
+  @@index([email])
+  @@index([expiresAt])
+  @@index([usedAt])
 }
 
 model ShieldCase {

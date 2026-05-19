@@ -104,7 +104,7 @@ export const providerExceptionWorkflows: Record<ProviderStatus, ProviderExceptio
   provider_invite_pending: {
     providerStatus: "provider_invite_pending",
     title: "We are preparing your secure check link.",
-    body: "Your payment was received and we are creating the secure provider link needed to continue your private review.",
+    body: "Your secure check link is being prepared. We’ll email you when it’s ready.",
     primaryCta: { label: "View status", href: "/dashboard" },
     currentStep: "Preparing secure check",
     nextStep: "Complete the secure provider check",

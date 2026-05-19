@@ -11,6 +11,57 @@
 .panel-list { margin: 12px 0 0 18px; }
 .panel-list li { margin: 6px 0; }
 
+.auth-panel {
+  max-width: 620px;
+}
+
+.auth-form {
+  display: grid;
+  gap: 14px;
+  margin-top: 24px;
+}
+
+.auth-form input {
+  width: 100%;
+  background: var(--cream);
+  border: 1px solid rgba(11,18,32,.14);
+  border-radius: 10px;
+  padding: 13px 14px;
+  font: inherit;
+}
+
+.auth-form .btn {
+  justify-self: start;
+  border: 0;
+  cursor: pointer;
+}
+
+.auth-form .btn:disabled {
+  cursor: wait;
+  opacity: .72;
+}
+
+.auth-callout,
+.auth-success {
+  margin-top: 16px;
+  padding: 12px 14px;
+  color: #0f5f61;
+  background: rgba(15, 139, 141, .1);
+  border: 1px solid rgba(15, 139, 141, .18);
+  border-radius: 12px;
+  font-size: 13px;
+}
+
+.auth-error {
+  margin-top: 16px;
+  padding: 12px 14px;
+  color: #9c2b12;
+  background: rgba(255, 77, 29, .08);
+  border: 1px solid rgba(255, 77, 29, .18);
+  border-radius: 12px;
+  font-size: 13px;
+}
+
 .best-for {
   margin: 0 0 14px;
   color: var(--slate);

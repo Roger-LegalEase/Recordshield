@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
-import { currentUser, type AppUser } from "@/lib/auth";
+import { authSessionCookieOptions, createAuthSessionCookie, currentUser, type AppUser } from "@/lib/auth";
+import { sessionCookieName } from "@/lib/auth-tokens";
 import { trackAnalyticsEvent } from "@/lib/analytics";
 import { betaAccessMessage, canStartRecordCheckCheckout, inviteCodeFromRequest } from "@/lib/beta";
 import { createRecordCheckCheckoutSession } from "@/lib/billing/checkout";
@@ -57,7 +58,9 @@ export async function POST(request: Request) {
       }
     });
 
-    return NextResponse.json({ url: session.url }, { status: 201 });
+    const response = NextResponse.json({ url: session.url }, { status: 201 });
+    response.cookies.set(sessionCookieName, createAuthSessionCookie(user), authSessionCookieOptions());
+    return response;
   } catch (error) {
     return safeErrorResponse(error, "Checkout is unavailable.");
   }

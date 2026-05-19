@@ -39,6 +39,8 @@ export default defineConfig({
     environment: "node",
     globals: false,
     include: [
+      "tests/auth-session.test.ts",
+      "tests/auth-magic-link.test.ts",
 	      "tests/analytics.test.ts",
 	      "tests/env.test.ts",
       "tests/product-config.test.ts",

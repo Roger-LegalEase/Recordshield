@@ -1979,7 +1979,7 @@ textarea:focus-visible {
   text-transform: uppercase;
 }
 
-.record-card h2 {
+.record-title {
   margin: 0;
   font-family: Georgia, serif;
   font-size: 34px;
@@ -2202,6 +2202,17 @@ textarea:focus-visible {
   }
 }
 
+@keyframes record-enter-mobile {
+  from {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
 @media(max-width:1040px) {
   .record-hero-stage {
     min-height: 500px;
@@ -2224,9 +2235,10 @@ textarea:focus-visible {
     min-height: 430px;
     padding: 22px;
     transform: none;
+    animation-name: record-enter-mobile;
   }
 
-  .record-card h2 {
+  .record-title {
     font-size: 28px;
   }
 
@@ -2275,6 +2287,12 @@ textarea:focus-visible {
   .reviewed-stamp,
   .hero-dashboard-card {
     opacity: 1;
+    transform: none;
+  }
+}
+
+@media(max-width:680px) and (prefers-reduced-motion: reduce) {
+  .record-card {
     transform: none;
   }
 }

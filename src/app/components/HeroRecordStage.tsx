@@ -13,12 +13,15 @@ const recordRows = [
 
 export function HeroRecordStage() {
   return (
-    <figure className="record-hero-stage" aria-label="Animated RecordShield review preview">
-      <div className="record-card" aria-label="Sample private review record">
+    <figure className="record-hero-stage">
+      <figcaption className="sr-only">
+        Animated preview of a private record review document and dashboard status card.
+      </figcaption>
+      <div className="record-card" aria-hidden="true">
         <div className="record-card-header">
           <div>
             <span className="record-kicker">RecordShield</span>
-            <h2>Private Review</h2>
+            <div className="record-title">Private Review</div>
           </div>
           <span className="record-chip">Needs review</span>
         </div>
@@ -43,7 +46,7 @@ export function HeroRecordStage() {
           Reviewed
         </div>
       </div>
-      <div className="hero-dashboard-card" aria-label="RecordShield dashboard status preview">
+      <div className="hero-dashboard-card" aria-hidden="true">
         <div className="hero-dashboard-top">
           <span>Dashboard preview</span>
           <strong>Live status</strong>

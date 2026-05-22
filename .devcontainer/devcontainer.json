@@ -1,6 +1,6 @@
 {
   "name": "RecordShield Checkr Verification",
-  "image": "mcr.microsoft.com/devcontainers/javascript-node:1-24-bookworm",
+  "image": "mcr.microsoft.com/devcontainers/javascript-node:1-22-bookworm",
   "features": {
     "ghcr.io/devcontainers/features/github-cli:1": {}
   },
@@ -13,7 +13,6 @@
     "NPM_CONFIG_FUND": "false",
     "NPM_CONFIG_PROGRESS": "false"
   },
-  "onCreateCommand": "sudo apt-get update && sudo apt-get install -y --no-install-recommends ca-certificates curl git jq openssl postgresql-client && sudo rm -rf /var/lib/apt/lists/*",
   "postCreateCommand": "node -v && npm -v",
   "customizations": {
     "vscode": {

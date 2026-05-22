@@ -9,7 +9,19 @@ This guide moves RecordShield verification into GitHub Codespaces so the local M
 3. Select **Code** -> **Codespaces** -> **Create codespace on current branch**.
 4. Wait for the devcontainer to finish. The container prints `node -v` and `npm -v` after setup.
 
-The Codespace uses Node 24 LTS on Debian Bookworm and installs Linux packages needed by Prisma, Next.js, Vitest, GitHub CLI, OpenSSL, and Postgres tooling.
+The Codespace uses Node 22 LTS on Debian Bookworm. Install optional Linux helper packages manually after the container starts so package-manager issues do not force Codespaces into recovery mode.
+
+## Optional System Packages
+
+Run this inside the Codespace after it opens:
+
+```bash
+sudo apt-get update
+sudo apt-get install -y --no-install-recommends ca-certificates curl git jq openssl postgresql-client
+sudo rm -rf /var/lib/apt/lists/*
+```
+
+These packages support shell diagnostics, webhook checks, OpenSSL secret generation, and Postgres command-line access. Prisma, Next.js, and Vitest should still install through `npm ci` from `package-lock.json`.
 
 ## Environment Variables
 

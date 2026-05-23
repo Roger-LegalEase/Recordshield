@@ -24,3 +24,11 @@ Notes:
 - Verification was run in GitHub Codespaces to avoid the local macOS APFS/disk bottleneck.
 - No real DATABASE_URL, Checkr, Stripe, OpenAI, Redis, or NextAuth secrets were printed or committed.
 - The dummy DATABASE_URL used for Prisma generate/validate did not connect to a database and was used only to satisfy Prisma env parsing.
+
+## Documentation Correction
+
+Application verification passed in Codespaces. Checkr integration verification is pending.
+
+This file documents baseline application verification and Checkr readiness planning. It does not mean Checkr is already integrated, production-ready, or reviewer-ready. No production Checkr calls are enabled, no live Checkr credentials should be used yet, and operational webhook/audit/integration-health evidence still needs to be built and tested in staging.
+
+See docs/checkr-integration-readiness-plan.md for the current internal plan.

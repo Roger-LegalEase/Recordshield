@@ -1,11 +1,16 @@
 import { NextResponse } from "next/server";
 import type { AppUser } from "@/lib/auth";
+import { emitLegalEaseOsEvent, type LegalEaseOsEventOptions } from "@/lib/legalese-os-events";
 import { createEnvWilmaLaunchBackend, type WilmaLaunchBackend } from "@/wilma/adapters/launchBackend";
 import { evaluateWilmaLaunchAccess, toPublicWilmaLaunchConfig } from "@/wilma/launch/evaluateLaunchAccess";
+import type { WilmaLaunchAccessDecision, WilmaLaunchConfig } from "@/wilma/launch/types";
 
 type WilmaConfigRouteDependencies = {
   launchBackend?: WilmaLaunchBackend;
   currentUser?: () => Promise<AppUser | null>;
+  legalEaseOsConfigEnv?: LegalEaseOsEventOptions["configEnv"];
+  legalEaseOsFetch?: LegalEaseOsEventOptions["fetcher"];
+  now?: () => Date;
 };
 
 export function createWilmaConfigRouteHandler(dependencies: WilmaConfigRouteDependencies = {}) {
@@ -25,6 +30,8 @@ export function createWilmaConfigRouteHandler(dependencies: WilmaConfigRouteDepe
       user
     });
 
+    await emitEngineHealthChanged(config, decision, dependencies);
+
     return NextResponse.json(toPublicWilmaLaunchConfig(decision), { status: 200 });
   };
 }
@@ -33,4 +40,41 @@ export const GET = createWilmaConfigRouteHandler();
 
 function normalizeState(value: string | null): string | undefined {
   return value?.trim().toUpperCase() || undefined;
+}
+
+async function emitEngineHealthChanged(
+  config: WilmaLaunchConfig,
+  decision: WilmaLaunchAccessDecision,
+  dependencies: WilmaConfigRouteDependencies
+) {
+  try {
+    await emitLegalEaseOsEvent(
+      {
+        source_system: "expungement_ai",
+        event_type: "engine.health_changed",
+        occurred_at: dependencies.now?.() ?? new Date(),
+        subject_type: "engine",
+        subject_ref: "expungement-engine",
+        jurisdiction: "ALL",
+        metrics: {
+          available: decision.allowed,
+          allowed_states_count: decision.allowedStates.length,
+          beta_only: config.betaOnly,
+          maintenance_mode: config.maintenanceMode,
+          kill_switch: config.killSwitch,
+          mode: decision.mode
+        },
+        summary: "Expungement engine health check completed.",
+        recommended_operator_action: "Review if repeated health failures appear.",
+        pii_classification: "none"
+      },
+      {
+        configEnv: dependencies.legalEaseOsConfigEnv,
+        fetcher: dependencies.legalEaseOsFetch,
+        now: dependencies.now
+      }
+    );
+  } catch {
+    // LegalEase OS telemetry must never affect public readiness checks.
+  }
 }

@@ -7,6 +7,7 @@ import type {
   WilmaTrackerBackend
 } from "@/wilma/orders/types";
 import { trackWilmaEvent } from "@/wilma/analytics/trackWilmaEvent";
+import { emitLegalEaseOsEvent, type LegalEaseOsEventOptions } from "@/lib/legalese-os-events";
 
 export async function fulfillWilmaOrder(
   order: WilmaDocumentPrepOrder,
@@ -16,6 +17,8 @@ export async function fulfillWilmaOrder(
     documentGenerationBackend: WilmaDocumentGenerationBackend;
     trackerBackend: WilmaTrackerBackend;
     now?: () => Date;
+    legalEaseOsConfigEnv?: LegalEaseOsEventOptions["configEnv"];
+    legalEaseOsFetch?: LegalEaseOsEventOptions["fetcher"];
   }
 ): Promise<WilmaDocumentPrepOrder> {
   if (order.status === "fulfilled" || order.status === "generating_documents") {
@@ -54,6 +57,11 @@ export async function fulfillWilmaOrder(
       documentGenerationJobId: documentResult.documentGenerationJobId,
       trackerWorkspaceId: trackerResult.trackerWorkspaceId
     }).then(async (fulfilled) => {
+      await emitPacketGeneratedEvent(fulfilled, {
+        configEnv: dependencies.legalEaseOsConfigEnv,
+        fetcher: dependencies.legalEaseOsFetch,
+        now: dependencies.now
+      });
       await trackWilmaEvent(dependencies.orderBackend, {
         event: "wilma_document_generation_succeeded",
         wilmaSessionId: session.id,
@@ -128,4 +136,34 @@ export function createDocumentGenerationPayload(
       reasonCodes: order.reasonCodes
     }
   };
+}
+
+async function emitPacketGeneratedEvent(
+  order: WilmaDocumentPrepOrder,
+  options: LegalEaseOsEventOptions
+): Promise<void> {
+  try {
+    await emitLegalEaseOsEvent(
+      {
+        source_system: "expungement_ai",
+        event_type: "packet.generated",
+        occurred_at: options.now?.() ?? new Date(),
+        subject_type: "packet_generation",
+        subject_ref: `wilma_packet:${order.id}:${order.documentTarget}`,
+        jurisdiction: order.state,
+        packet_type: order.documentTarget,
+        metrics: {
+          reason_code_count: order.reasonCodes.length,
+          has_tracker_workspace: Boolean(order.trackerWorkspaceId),
+          rule_version: order.ruleVersion
+        },
+        summary: "Document-prep packet generation completed.",
+        recommended_operator_action: "Review packet generation trends if failures increase.",
+        pii_classification: "hashed_reference_only"
+      },
+      options
+    );
+  } catch {
+    // LegalEase OS telemetry must never affect fulfillment.
+  }
 }

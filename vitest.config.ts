@@ -40,6 +40,7 @@ export default defineConfig({
     globals: false,
     include: [
 	      "tests/analytics.test.ts",
+	      "tests/legalese-os-events.test.ts",
 	      "tests/env.test.ts",
 	      "tests/product-config.test.ts",
 	      "tests/checkr.test.ts",
